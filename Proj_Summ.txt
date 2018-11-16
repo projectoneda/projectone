@@ -1,0 +1,33 @@
+# Is sell in may strategy a plan that is valid
+##Assumption – for the purposes of this 1st exercise, we are focusing only one the effects of time and not taking any other external factors  
+o	###Strategies
+	###Baseline – Allow your investments to sit as they are and take no action
+	Strategy – sell in may 
+o	Tasks
+	1 – Alex - API Pulls and dump to dataframe
+•	1 - Pull all historical stock price data by day for every year (S&P500)
+•	Dataframe Variables
+o	Time
+o	Closing price
+	Daily overall market
+	Daily Industry overall
+	2 – Jose - Compare year over year change of 2 options - time periods
+•	Rate of return
+	3 – Don and Layla - Charts
+•	RoR - Index as a whole
+•	RoR – Industry Subsectors
+•	Industry 
+•	Create bar chart to show
+•	 Entire year
+•	Time period comparison
+o	Jan – Apr
+o	May – Dec
+o	
+	3 - Breakdown by industry sector
+•	Assumption – even if companies move sectors, we are assuming 
+	Statistics to understand statistical significance 
+•	Z score
+•	T test
+•	P value
+	Compare day to day change of both options
+	How many times has sell in may strategy beat baseline 
