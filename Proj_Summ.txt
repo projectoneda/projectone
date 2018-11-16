@@ -1,4 +1,4 @@
-#Is sell in may strategy a plan that is valid
+# Is sell in may strategy a plan that is valid
 ##Assumption – for the purposes of this 1st exercise, we are focusing only one the effects of time and not taking any other external factors  
 o	###Strategies
 	###Baseline – Allow your investments to sit as they are and take no action
