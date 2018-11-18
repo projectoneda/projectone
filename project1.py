@@ -26,7 +26,7 @@ market = pd.read_csv (csvpath)
 url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
 # Dons test to see if github works
 url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
-api = api_key
+api = "00000000"
 
 # Pretty print JSON for all launchpads
 response = requests.get(url+api).json()
