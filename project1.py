@@ -15,12 +15,18 @@ import numpy as np
 #import matplotlib.pyplot as plt
 #from config import api_key
 from pprint import pprint
+import os
+
+#Specify the file path
+csvpath = os.path.join('market.csv')
+   
+market = pd.read_csv (csvpath)
 
 # URL for GET requests to retrieve vehicle data
-#url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
+url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
 # Dons test to see if github works
 url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
-api = "4OGUVLMXW3CE1NXR"
+api = api_key
 
 # Pretty print JSON for all launchpads
 response = requests.get(url+api).json()
@@ -29,7 +35,7 @@ response = requests.get(url+api).json()
 ## Pretty print JSON for a specific launchpad
 #pprint(response)
 
-print (len(response))
+#print (len(response))
 
 ## Initialize arrays
 #open_price = []
