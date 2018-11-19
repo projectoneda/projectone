@@ -22,6 +22,37 @@ csvpath = os.path.join('market.csv')
    
 market = pd.read_csv (csvpath)
 
+# new data frame with split value columns 
+market_data = market["Date"].str.split("-", n = 1, expand = True) 
+  
+# making seperate first name column from new data frame 
+market["Year"] = market_data[0] 
+  
+# making seperate last name column from new data frame 
+market["stuff"] = market_data[1] 
+
+#market["Day"] = market_data[2]
+  
+# Dropping old Name columns 
+market.drop(columns =["Date"], inplace = True) 
+
+# new data frame with split value columns 
+market_data = market["stuff"].str.split("-", n = 1, expand = True) 
+
+# making seperate first name column from new data frame 
+market["Month"] = market_data[0] 
+  
+# making seperate last name column from new data frame 
+market["Day"] = market_data[1] 
+  
+# Dropping old Name columns 
+market.drop(columns =["stuff "], inplace = True) 
+# df display 
+print (market) 
+
+# Calculate the percent changes for each month
+
+
 # URL for GET requests to retrieve vehicle data
 url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
 # Dons test to see if github works
