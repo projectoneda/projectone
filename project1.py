@@ -70,20 +70,20 @@ total_net = 0
 # Extract first row to avoid appending to net_change_list
 first_row = next(market)
 total_months = total_months + 1
-total_net = total_net + first_row[1]
-prev_net = first_row[1]
+total_net = total_net + int(first_row[1])
+prev_net = int(first_row[1])
 
 for row in market:
 
     # Track the total
     total_months = total_months + 1
-    total_net = total_net + row[1]
+    total_net = total_net + int(row[1])
 
     # Track the net change
-    net_change = row[1] - prev_net
-    prev_net = row[1]
+    net_change = int(row[1]) - prev_net
+    prev_net = int(row[1])
     net_change_list = net_change_list + [net_change]
-    month_of_change = month_of_change + [row[1]]
+    month_of_change = month_of_change + [row[0]]
 
 print (total_months)
 print (net_change_list)
