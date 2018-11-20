@@ -15,6 +15,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 #from config import api_key
 from pprint import pprint
+import csv
 import os
 
 #Specify the file path
@@ -46,9 +47,46 @@ market["Month"] = market_data[0]
 market["Day"] = market_data[1] 
   
 # Dropping old Name columns 
-market.drop(columns =["stuff "], inplace = True) 
+market.drop(columns =["stuff"], inplace = True) 
+market.drop(columns =["Adj Close"], inplace = True) 
+market.drop(columns =["Volume"], inplace = True) 
+market.drop(columns =["Low"], inplace = True) 
+market.drop(columns =["High"], inplace = True) 
+market.drop(columns =["Day"], inplace = True) 
+
+# Export the results to text file
+with open(market_data, "w") as txt_file:
+    txt_file.write(market)
+
 # df display 
 print (market) 
+
+# Track various financial parameters
+total_months = 0
+month_of_change = []
+net_change_list = []
+total_net = 0
+
+# Extract first row to avoid appending to net_change_list
+first_row = next(market)
+total_months = total_months + 1
+total_net = total_net + first_row[1]
+prev_net = first_row[1]
+
+for row in market:
+
+    # Track the total
+    total_months = total_months + 1
+    total_net = total_net + row[1]
+
+    # Track the net change
+    net_change = row[1] - prev_net
+    prev_net = row[1]
+    net_change_list = net_change_list + [net_change]
+    month_of_change = month_of_change + [row[1]]
+
+print (total_months)
+print (net_change_list)
 
 # Calculate the percent changes for each month
 
