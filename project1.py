@@ -55,8 +55,7 @@ market.drop(columns =["High"], inplace = True)
 market.drop(columns =["Day"], inplace = True) 
 
 # Export the results to text file
-with open(market_data, "w") as txt_file:
-    txt_file.write(market)
+market.to_csv('market2.csv', index = False)
 
 # df display 
 print (market) 
