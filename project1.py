@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Nov 18 12:40:41 2018
-
+#TESTbyALEX
 @author: riceowl1
 """
 
@@ -17,6 +17,8 @@ import numpy as np
 from pprint import pprint
 import csv
 import os
+import matplotlib as plt
+
 
 #Specify the file path
 csvpath = os.path.join('market.csv')
@@ -72,11 +74,30 @@ print (first_row)
 
 
 
+<<<<<<< HEAD
 ## URL for GET requests to retrieve vehicle data
 #url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
 ## Dons test to see if github works
 #url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
 #api = "00000000"
+=======
+    # Track the net change
+    net_change = int(row[1]) - prev_net
+    prev_net = int(row[1])
+    net_change_list = net_change_list + [net_change]
+    month_of_change = month_of_change + [row[0]]
+
+print (total_months)
+print (net_change_list)
+
+# Calculate the percent changes for each month
+
+
+# URL for GET requests to retrieve vehicle data
+url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
+api = "00000000"
+>>>>>>> 9c9eafa39c23be297a21969b3ed0e94606e5f681
 
 # Pretty print JSON for all launchpads
 response = requests.get(url+api).json()
@@ -138,3 +159,6 @@ response = requests.get(url+api).json()
 #
 #market_data.head()
 
+#---------------------------------------------
+#CHARTS
+#---------------------------------------------
