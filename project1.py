@@ -17,6 +17,8 @@ import numpy as np
 from pprint import pprint
 import csv
 import os
+import matplotlib as plt
+
 
 #Specify the file path
 csvpath = os.path.join('market.csv')
@@ -92,7 +94,6 @@ print (net_change_list)
 
 # URL for GET requests to retrieve vehicle data
 url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
-# Dons test to see if github works
 url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
 api = "00000000"
 
@@ -156,3 +157,6 @@ response = requests.get(url+api).json()
 #
 #market_data.head()
 
+#---------------------------------------------
+#CHARTS
+#---------------------------------------------
