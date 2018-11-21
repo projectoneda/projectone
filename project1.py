@@ -85,7 +85,7 @@ print (first_row)
 #>>>>>>> 9c9eafa39c23be297a21969b3ed0e94606e5f681
 
 # Pretty print JSON for all launchpads
-response = requests.get(url+api).json()
+#response = requests.get(url+api).json()
 #print(json.dumps(response, indent=4, sort_keys=True)) 
 #
 ## Pretty print JSON for a specific launchpad
