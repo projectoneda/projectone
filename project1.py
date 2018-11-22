@@ -62,6 +62,36 @@ market.to_csv('market2.csv', index = False)
 # df display 
 print (market) 
 
+def label_month (row):
+   if row['Month'] == '01' :
+      return 'Nov-Apr'
+   if row['Month'] == '02' :
+      return 'Nov-Apr'
+   if row['Month'] == '03' :
+      return 'Nov-Apr'
+   if row['Month'] == '04' :
+      return 'Nov-Apr'
+   if row['Month'] == '05' :
+      return 'May-Oct'
+   if row['Month'] == '06' :
+      return 'May-Oct'
+   if row['Month'] == '07' :
+      return 'May-Oct'
+   if row['Month'] == '08' :
+      return 'May-Oct'
+   if row['Month'] == '09' :
+      return 'May-Oct'
+   if row['Month'] == '10' :
+      return 'May-Oct'
+   if row['Month'] == '11' :
+      return 'Nov-Apr'
+   if row['Month'] == '12' :
+      return 'Nov-Apr'  
+   return 'Other'
+
+market['Season'] = market.apply (lambda row: label_month (row),axis=1)
+
+
 # Track various financial parameters
 total_months = 0
 month_of_change = []
@@ -69,10 +99,11 @@ net_change_list = []
 total_net = 0
 
 # Extract first row to avoid appending to net_change_list
-first_row = market.loc[market.index[0]]
-print (first_row)
+#first_row = market.loc[market.index[0]]
+#print (first_row)
 
-
+# df display 
+print (market) 
 
 
 # Calculate the percent changes for each month
