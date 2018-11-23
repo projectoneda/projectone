@@ -59,37 +59,83 @@ market.drop(columns =["Day"], inplace = True)
 # Export the results to text file
 market.to_csv('market2.csv', index = False)
 
-# df display 
-print (market) 
+#initialize data
+market.drop(market.index[:4], inplace=True)
 
-def label_month (row):
+#initalize market types
+high_profit_market = market
+low_profit_market = market
+
+
+#df display 
+#print (market) 
+
+#structure data
+
+def label_nov_apr_month (row):
    if row['Month'] == '01' :
-      return 'Nov-Apr'
+      return np.NaN
    if row['Month'] == '02' :
-      return 'Nov-Apr'
+      return np.NaN
    if row['Month'] == '03' :
-      return 'Nov-Apr'
+      return np.NaN
    if row['Month'] == '04' :
       return 'Nov-Apr'
    if row['Month'] == '05' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '06' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '07' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '08' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '09' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '10' :
-      return 'May-Oct'
+      return np.NaN
    if row['Month'] == '11' :
       return 'Nov-Apr'
    if row['Month'] == '12' :
-      return 'Nov-Apr'  
+      return np.NaN  
    return 'Other'
 
-market['Season'] = market.apply (lambda row: label_month (row),axis=1)
+def label_may_oct_month (row):
+   if row['Month'] == '01' :
+      return np.NaN
+   if row['Month'] == '02' :
+      return np.NaN
+   if row['Month'] == '03' :
+      return np.NaN
+   if row['Month'] == '04' :
+      return np.NaN
+   if row['Month'] == '05' :
+      return 'May-Oct'
+   if row['Month'] == '06' :
+      return np.NaN
+   if row['Month'] == '07' :
+      return np.NaN
+   if row['Month'] == '08' :
+      return np.NaN
+   if row['Month'] == '09' :
+      return np.NaN
+   if row['Month'] == '10' :
+      return 'May-Oct'
+   if row['Month'] == '11' :
+      return np.NaN
+   if row['Month'] == '12' :
+      return np.NaN  
+   return 'Other'
+
+#create label column and drop NaN
+high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
+high_profit_market = high_profit_market.dropna(axis = 0, how ='any') 
+
+low_profit_market['Season'] = low_profit_market.apply (lambda row: label_may_oct_month (row),axis=1)
+low_profit_market = low_profit_market.dropna(axis = 0, how ='any') 
+
+#view data
+print (high_profit_market)
+print (low_profit_market)
 
 
 # Track various financial parameters
@@ -103,8 +149,9 @@ total_net = 0
 #print (first_row)
 
 # df display 
-print (market) 
-
+#print (market) 
+#test = market.groupby('Season')
+#print (test.head())
 
 # Calculate the percent changes for each month
 
