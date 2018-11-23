@@ -126,18 +126,19 @@ def label_may_oct_month (row):
 #create label column and drop NaN
 high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
 high_profit_market = high_profit_market.dropna(axis = 0, how ='any') 
-high_profit_market = high_profit_market.reset_index()
+high_profit_market = high_profit_market.reset_index(drop = True)
 high_profit_market.drop(market.index[:1], inplace=True)
-high_profit_market = high_profit_market.reset_index()
+high_profit_market = high_profit_market.reset_index(drop = True)
+
+high_profit_market ['return'] = high_profit_market (lambda row: 'Open'/'Close'.shift(1))
 
 low_profit_market['Season'] = low_profit_market.apply (lambda row: label_may_oct_month (row),axis=1)
 low_profit_market = low_profit_market.dropna(axis = 0, how ='any') 
-low_profit_market = low_profit_market.reset_index()
+low_profit_market = low_profit_market.reset_index(drop = True)
 
 #view data
 print (high_profit_market)
 print (low_profit_market)
-
 
 # Track various financial parameters
 
