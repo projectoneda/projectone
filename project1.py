@@ -59,9 +59,6 @@ market.drop(columns =["Day"], inplace = True)
 # Export the results to text file
 market.to_csv('market2.csv', index = False)
 
-#initialize data
-market.drop(market.index[:4], inplace=True)
-
 #initalize market types
 high_profit_market = market
 low_profit_market = market
@@ -129,9 +126,13 @@ def label_may_oct_month (row):
 #create label column and drop NaN
 high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
 high_profit_market = high_profit_market.dropna(axis = 0, how ='any') 
+high_profit_market = high_profit_market.reset_index()
+high_profit_market.drop(market.index[:1], inplace=True)
+high_profit_market = high_profit_market.reset_index()
 
 low_profit_market['Season'] = low_profit_market.apply (lambda row: label_may_oct_month (row),axis=1)
 low_profit_market = low_profit_market.dropna(axis = 0, how ='any') 
+low_profit_market = low_profit_market.reset_index()
 
 #view data
 print (high_profit_market)
@@ -139,88 +140,7 @@ print (low_profit_market)
 
 
 # Track various financial parameters
-total_months = 0
-month_of_change = []
-net_change_list = []
-total_net = 0
 
-# Extract first row to avoid appending to net_change_list
-#first_row = market.loc[market.index[0]]
-#print (first_row)
-
-# df display 
-#print (market) 
-#test = market.groupby('Season')
-#print (test.head())
-
-# Calculate the percent changes for each month
-
-
-# URL for GET requests to retrieve vehicle data
-#url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
-#url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
-#api = "00000000"
-#>>>>>>> 9c9eafa39c23be297a21969b3ed0e94606e5f681
-
-# Pretty print JSON for all launchpads
-#response = requests.get(url+api).json()
-#print(json.dumps(response, indent=4, sort_keys=True)) 
-#
-## Pretty print JSON for a specific launchpad
-#pprint(response)
-
-#print (len(response))
-
-## Initialize arrays
-#open_price = []
-#high_price = []
-#low_price = []
-#close_price = []
-#date = []
-#
-#x = 0
-#months = 217
-#error = 0
-#
-#for x in months:
-#    response = response
-#    time.sleep(1)
-#  
-#    #Check for bad data
-#    
-#    try:
-#        open_price.append(response['1. open'])
-#        high_price.append(response['2. high'])
-#        low_price.append(response['3. low'])
-#        close_price.append(response['4. close'])
-#        date.append(response['data']['speed'])
-#
-#        print(f"Processing record {x + 1}")
-#    except KeyError:
-#        open_price.append(np.nan)
-#        high_price.append(np.nan)
-#        low_price.append(np.nan)
-#        close_price.append(np.nan)
-#        date.append(np.nan)
-#        print(f"Error with record {x + 1} | will be skipped")
-#        error += 1
-#
-#print("--------------------------------------------")
-#print("Data Processing Complete")
-#print("--------------------------------------------")
-#
-## Assemble everything into a data frame
-#market_data = pd.DataFrame({"Open": open_price,
-#                           "High": high_price,
-#                           "Low": low_price,
-#                           "Close": close_price,
-#                           "Date": date,
-#                          })
-#
-## Remove any values that have NaN values
-#market_data.dropna(how='any', inplace = True)
-#
-#market_data.head()
 
 #---------------------------------------------
 #CHARTS
