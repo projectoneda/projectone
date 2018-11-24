@@ -59,7 +59,7 @@ market.drop(columns =["Day"], inplace = True)
 
 
 # Export the results to text file
-market.to_csv('market2.csv', index = False)
+market.to_csv('market_data.csv', index = False)
 
 market2 = market
 market3 = market
@@ -156,11 +156,9 @@ def label_month (row):
       return 'Nov-Apr' 
    return 'Other'
 
-market['Season'] = market.apply (lambda row: label_month (row),axis=1)
-
 #create label column and drop NaN
    
-market2.drop(market.columns[[5]], axis=1, inplace=True)
+#market2.drop(market.columns[[5]], axis=1, inplace=True)
 market2 = market.dropna(axis = 0, how ='any') 
 market2 = market.reset_index(drop = True)
 
@@ -177,19 +175,20 @@ low_profit_market = low_profit_market.dropna(axis = 0, how ='any')
 low_profit_market = low_profit_market.reset_index(drop = True)
 low_profit_market['Return'] = low_profit_market.Open.pct_change(1)
 
-rng = pd.date_range('5/1/1950', periods=137, freq='M')
-market3 = pd.DataFrame({'value':range(1,138),'Date':rng})
-market3 = market2.set_index('Date')
-
 market2['pct_pop'] = market2['Open'].pct_change()
-market2['pct_yoy'] = market2['Open'].pct_change(6)
-
-
+market2['pct_sos'] = market2['Open'].pct_change(6)
+market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
 
 #view data
 print (high_profit_market.head())
 print (low_profit_market.head())
-print (market2.head(30))
+print (market2.head())
+
+# Export the results to text file
+market2.to_csv('market2.csv', index = False)
+high_profit_market.to_csv('high_profit_market.csv', index = False)
+low_profit_market.to_csv('low_profit_market.csv', index = False)
+
 
 # Track various financial parameters
 
