@@ -73,7 +73,7 @@ low_profit_market = market
 #print (market2.head())
 #print (market3.head())
 
-#structure data
+#structure data - idea 1 
 
 def label_nov_apr_month (row):
    if row['Month'] == '01' :
@@ -129,6 +129,8 @@ def label_may_oct_month (row):
       return np.NaN  
    return 'Other'
 
+#structure data - idea two - used
+
 def label_month (row):
    if row['Month'] == '01' :
       return 'Nov-Apr'
@@ -156,33 +158,38 @@ def label_month (row):
       return 'Nov-Apr' 
    return 'Other'
 
-#create label column and drop NaN
-   
-#market2.drop(market.columns[[5]], axis=1, inplace=True)
+#create label column and drop NaN - idea 2
+# 'pop' = period over period
+# 'sos' = season over season; returns are 6 months apart;
 market2 = market.dropna(axis = 0, how ='any') 
-market2 = market.reset_index(drop = True)
+market2.drop(market2.index[:3], inplace=True)
+market2 = market2.reset_index(drop = True)
+#print (market2.head(10))
 
+#calculate returns e ery month and every 6 months
+market2['pct_pop'] = market2['Open'].pct_change()
+market2['pct_sos'] = market2['Open'].pct_change(6)
+market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
+
+#create label column and drop NaN - idea 1
 high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
 high_profit_market = high_profit_market.dropna(axis = 0, how ='any') 
 high_profit_market = high_profit_market.reset_index(drop = True)
 high_profit_market.drop(market.index[:1], inplace=True)
 high_profit_market = high_profit_market.reset_index(drop = True)
 
-#high_profit_market ['return'] = high_profit_market (lambda row: 'Open'/'Close'.shift(1))
-
 low_profit_market['Season'] = low_profit_market.apply (lambda row: label_may_oct_month (row),axis=1)
 low_profit_market = low_profit_market.dropna(axis = 0, how ='any') 
 low_profit_market = low_profit_market.reset_index(drop = True)
 low_profit_market['Return'] = low_profit_market.Open.pct_change(1)
 
-market2['pct_pop'] = market2['Open'].pct_change()
-market2['pct_sos'] = market2['Open'].pct_change(6)
-market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
-
 #view data
-print (high_profit_market.head())
-print (low_profit_market.head())
-print (market2.head())
+#print (high_profit_market.head())
+#print (low_profit_market.head())
+print (market2.head(20))
+
+#filter1 = market2.groupby.Season.values()
+#print (filter1.head())
 
 # Export the results to text file
 market2.to_csv('market2.csv', index = False)
