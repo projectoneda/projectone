@@ -170,6 +170,8 @@ market2 = market2.reset_index(drop = True)
 market2['pct_pop'] = market2['Open'].pct_change()
 market2['pct_sos'] = market2['Open'].pct_change(6)
 market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
+market2 = market2[['Date', 'Open', 'pct_sos', 'Month', 'Year', 'pct_pop', 'Season', 'Close']]
+
 
 #create label column and drop NaN - idea 1
 high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
