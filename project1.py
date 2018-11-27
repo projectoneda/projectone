@@ -166,7 +166,7 @@ market2.drop(market2.index[:3], inplace=True)
 market2 = market2.reset_index(drop = True)
 #print (market2.head(10))
 
-#calculate returns e ery month and every 6 months
+#calculate returns every month and every 6 months
 market2['pct_pop'] = market2['Open'].pct_change()
 market2['pct_sos'] = market2['Open'].pct_change(6)
 market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
@@ -188,7 +188,7 @@ low_profit_market['Return'] = low_profit_market.Open.pct_change(1)
 #view data
 #print (high_profit_market.head())
 #print (low_profit_market.head())
-print (market2.head(20))
+#print (market2.head(20))
 
 #filter1 = market2.groupby.Season.values()
 #print (filter1.head())
@@ -205,3 +205,51 @@ low_profit_market.to_csv('low_profit_market.csv', index = False)
 #---------------------------------------------
 #CHARTS
 #---------------------------------------------
+
+#Average Return % by Season (for all years)
+
+#Group by year and time period 
+#Market_By_Season = market2.groupby(["Year","Season"]).mean()
+##Market_By_Season.head()
+#
+#Market_By_Season = Market_By_Season.reset_index()
+##Market_By_Season.head()
+#
+##Filter Market_by_Season dataframe by Season column to only include May-Oct
+#May_Oct = Market_By_Season.loc[Market_By_Season["Season"]== "May-Oct",:]
+#May_Oct.head()
+
+#Filter market2 df by Season column for May-Oct and Nov-Apr
+May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
+Nov_Apr = market2.loc[market2["Season"] == "Nov-Apr" , :]
+
+#Calculate average pop and sos returns for different time periods
+#I think we actually just want the average sos returns for April and October??
+May_Oct_Avgp = May_Oct["pct_pop"].mean()
+May_Oct_Avgs = May_Oct["pct_sos"].mean()
+
+May_Oct_Avgs
+
+#Calculate 
+
+#---------------------------------------------
+#Line Charts
+#---------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
