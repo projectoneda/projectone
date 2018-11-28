@@ -12,12 +12,11 @@ import json
 import time
 import pandas as pd
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 #from config import api_key
 from pprint import pprint
 import csv
 import os
-import matplotlib as plt
 
 
 #Specify the file path
@@ -220,7 +219,32 @@ low_profit_market.to_csv('low_profit_market.csv', index = False)
 #May_Oct.head()
 
 #Filter market2 df by Season column for May-Oct and Nov-Apr
+#Filter market2 df by Month Nov(11) and May(5)
+Nov_df = market2.loc[market2["Month"] == "11" , : ]
+May_df =  market2.loc[market2["Month"] == "05" , : ]
+May_df = May_df.dropna()
+May_df
+
+#Calculate average  seasonal percent changes
+Nov_pop_avg = Nov_df["pct_sos"].mean()
+Nov_pop_avg 
+
+May_pop_avg = May_df["pct_sos"].mean()
+May_pop_avg
+
+#Create list of seasonal averages for bar chart values
+Seas_avgs = [Nov_pop_avg,May_pop_avg]
+
+#x value locations
+x_axis = np.arange(len(Seas_avgs))
+
+plt.bar(x_axis,Seas_avgs, color = "b", align = "center")
+
+
 May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
+#Filter May_Oct df by Month to only show pop returns  
+
+
 Nov_Apr = market2.loc[market2["Season"] == "Nov-Apr" , :]
 
 #Calculate average pop and sos returns for different time periods
@@ -230,7 +254,7 @@ May_Oct_Avgs = May_Oct["pct_sos"].mean()
 
 May_Oct_Avgs
 
-#Calculate 
+
 
 #---------------------------------------------
 #Line Charts
