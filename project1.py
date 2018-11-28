@@ -219,26 +219,40 @@ low_profit_market.to_csv('low_profit_market.csv', index = False)
 #May_Oct.head()
 
 #Filter market2 df by Season column for May-Oct and Nov-Apr
+#------------------------------------------------------------------
+
 #Filter market2 df by Month Nov(11) and May(5)
 Nov_df = market2.loc[market2["Month"] == "11" , : ]
 May_df =  market2.loc[market2["Month"] == "05" , : ]
 May_df = May_df.dropna()
-May_df
 
-#Calculate average  seasonal percent changes
-Nov_pop_avg = Nov_df["pct_sos"].mean()
-Nov_pop_avg 
-
+#Calculate average seasonal percent changes
+Nov_pop_avg = Nov_df["pct_sos"].mean() 
 May_pop_avg = May_df["pct_sos"].mean()
-May_pop_avg
+
+#BAR CHART--------------------------------------------------
 
 #Create list of seasonal averages for bar chart values
-Seas_avgs = [Nov_pop_avg,May_pop_avg]
+seas_avgs = [May_pop_avg,Nov_pop_avg]
 
-#x value locations
-x_axis = np.arange(len(Seas_avgs))
+#Create x value locations
+x_axis = np.arange(len(seas_avgs))
 
-plt.bar(x_axis,Seas_avgs, color = "b", align = "center")
+#Create tick labels
+ticks = market2["Season"].unique()
+
+#Set space between bars
+bar_pos = [0,0.3]
+
+#Create plot
+plt.bar(bar_pos,
+        seas_avgs,
+        width = 0.3,
+        color = ["b","g"],
+        tick_label = ticks, 
+        align = "center")
+
+plt.xticks(bar_pos,ticks)
 
 
 May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
@@ -248,7 +262,6 @@ May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
 Nov_Apr = market2.loc[market2["Season"] == "Nov-Apr" , :]
 
 #Calculate average pop and sos returns for different time periods
-#I think we actually just want the average sos returns for April and October??
 May_Oct_Avgp = May_Oct["pct_pop"].mean()
 May_Oct_Avgs = May_Oct["pct_sos"].mean()
 
