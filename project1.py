@@ -314,18 +314,53 @@ plt.show()
 may_dec = market2.loc[market2["Season"] == "May-Dec" , : ]
 apr_nov = market2.loc[market2["Season"] == "Apr-Nov" , : ]
 
+plt.figure(figsize=(15, 6), dpi=80)
+
 # Generate the Plot
-plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.50)
-plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.50)
+plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
 
 plt.title("Average Total Return (May-Dec & Apr-Nov)")
 plt.ylabel("Total Return")
-plt.xlabel("")
+plt.xlabel("Month in Season")
 plt.grid(True)
+
 # plt.legend
 blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
 green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
 plt.legend(handles=[blue_patch, green_patch])
+
+# Save the Figure
+plt.savefig("may_dec_apr_nov.png")
+
+# Show the Figure
+plt.show()
+
+#-----------------------------------------------
+# Average Total Return Jul-Feb, Aug-Mar, Sep-Apr
+#-----------------------------------------------
+
+jul_feb = market2.loc[market2["Season"] == "Jul-Feb" , : ]
+aug_mar = market2.loc[market2["Season"] == "Aug-Mar" , : ]
+sep_apr = market2.loc[market2["Season"] == "Sep-Apr" , : ]
+
+plt.figure(figsize=(15, 6), dpi=80)
+
+# Generate the Plot
+plt.plot(jul_feb["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+
+plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
+plt.ylabel("Total Return")
+plt.xlabel("Month in Season")
+plt.grid(True)
+
+# plt.legend
+blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
+red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
+plt.legend(handles=[blue_patch, green_patch, red_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
