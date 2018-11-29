@@ -269,47 +269,37 @@ May_Oct_Avgs
 
 
 
+
 #---------------------------------------------
-#Line Charts
+# Average Total Return by Month
 #---------------------------------------------
 
-
-high_profit = pd.read_csv("high_profit_market.csv")
-low_profit = pd.read_csv("low_profit_market.csv")
-high_low = pd.concat([high_profit, low_profit_market])
-
-high_mean = high_profit.groupby(["Year"]).mean()["Return"]
-low_mean = low_profit.groupby(["Year"]).mean()["Return"]
-high_low = high_low.groupby(["Year"]).mean()["Return"]
+season = market2.groupby(["Season"]).mean()["pct_sos"]
+sort = pd.DataFrame(season)
+sort = sort.sort_values(by='pct_sos', ascending=False)
+sort2 = sort.reset_index()
+barheight = sort2["pct_sos"]
+ax = plt.subplots(figsize=(10,4))
 
 # Generate the Plot 
-plt.errorbar(high_profit.index, high_profit["Return"], yerr=high_profit["high_profit_market"], color="r", marker="o", markersize=5, linestyle="dashed", linewidth=0.50)
-plt.errorbar(low_profit.index, low_profit["Return"], yerr=low_profit["low_profit_market"], color="b", marker="^", markersize=5, linestyle="dashed", linewidth=0.50)
-plt.errorbar(high_low.index, high_low["Return"], yerr=high_low["market2"], color="g", marker="X", markersize=5, linestyle="dashed", linewidth=0.50)
+x_axis = np.arange(len(season))
+
+plt.bar(x_axis,barheight , color="gold", align="center")
 
 plt.title("Average Total Return")
 plt.ylabel("Total Return")
 plt.xlabel("Time (Years)")
 plt.grid(True)
-plt.legend(loc="best", fontsize="small", fancybox=True)
+
+
+x = ['Apr-Nov', 'Aug-Mar', 'Dec-Jul', 'Jul-Feb', 'Jun-Jan', 'May-Dec', 'Nov-Apr', 'Nov-Jun', 'Oct-May', 'Sep-Apr']
+x_pos = [i for i, _ in enumerate(x)]
+plt.xticks(x_pos, x)
+
+
 
 # Save the Figure
-# plt.savefig("analysis/Fig1.png")
+plt.savefig("avg_total_ret_sea.png")
 
 # Show the Figure
-# plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+plt.show()
