@@ -473,7 +473,7 @@ plt.xlabel("Time (Years)")
 plt.grid(True)
 
 
-x = ['May-Dec', 'Apr-Nov', 'Jun-Jan', 'Nov-Apr', 'Jul-Feb', 'Aug-Mar', 'Sep-Apr', 'Dec-Jul', 'Oct-May', 'Nov-Jun']
+x = ['Dec-May', 'Nov-Apr', 'Jan-Jun', 'Apr-Nov', 'Feb-Jul', 'Mar-Aug', 'Apr-Sep', 'Jul-Dec', 'May-Oct', 'Jun-Nov']
 x_pos = [i for i, _ in enumerate(x)]
 plt.xticks(x_pos, x)
 
