@@ -12,13 +12,193 @@ import json
 import time
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-#from config import api_key
 from pprint import pprint
+import os
+from config import api_key
 import csv
 import os
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from alpha_vantage.timeseries import TimeSeries
+from pandas.io.json import json_normalize
 
+# URL for GET requests to retrieve vehicle data
+url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
+#Dons test to see if github works
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
+api = api_key
+# ts = TimeSeries(key=api, output_format='pandas')
+#print(url+api)
+
+# Pretty print JSON for all launchpads
+response = requests.get(url+api).json()
+#print(json.dumps(response, indent=4, sort_keys=True))
+#pprint(response)
+# data, meta_data = ts.get_monthly(symbol= ".inix")
+# pprint(data.head(2))
+
+alpha_df = response["Monthly Time Series"]
+#alpha_df
+
+alpha_df2= pd.DataFrame.from_dict(alpha_df, orient = 'index')
+
+# alpha_df2.rename_axis('Date')
+alpha_df3 = alpha_df2.reset_index()
+alpha_df4=alpha_df3.rename(columns= {"index":"Date","1. open":"Open","4. close": "Close","5. volume": "Volume"})
+alpha_v= alpha_df4.drop(columns=["2. high","3. low"])
+alpha_v[["Open", "Close"]] = alpha_v[["Open", "Close"]].astype(float)
+#alpha_v.head(10)
+
+# new data frame with split value columns 
+market_data2 = alpha_v["Date"].str.split("-", n = 1, expand = True) 
+  
+# making seperate first name column from new data frame 
+alpha_v["Year"] = market_data2[0] 
+  
+# making seperate last name column from new data frame 
+alpha_v["stuff"] = market_data2[1] 
+
+#market["Day"] = market_data[2]
+  
+# Dropping old Name columns 
+#market.drop(columns =["Date"], inplace = True) 
+
+# new data frame with split value columns 
+market_data2 = alpha_v["stuff"].str.split("-", n = 1, expand = True) 
+
+# making seperate first name column from new data frame 
+alpha_v["Month"] = market_data2[0] 
+  
+# making seperate last name column from new data frame 
+alpha_v["Day"] = market_data2[1] 
+# market2.drop(columns =["High"], inplace = True) 
+# market.drop(columns =["Low"], inplace = True) 
+# # market.drop(columns =["Open"], inplace = True) 
+# market.drop(columns =["Close"], inplace = True) 
+# market2.rename(columns={'Adj Close':'Close'}, inplace=True)
+
+# Dropping old Name columns 
+alpha_v.drop(columns =["stuff"], inplace = True) 
+# df display 
+#alpha_v.head(10)
+
+alpha_v2 = alpha_v
+alpha_v3 = alpha_v
+
+#initalize market types
+high_profit_market_av = alpha_v
+low_profit_market_av = alpha_v
+
+def label_nov_apr_month2 (row):
+   if row['Month'] == '01' :
+      return np.NaN
+   if row['Month'] == '02' :
+      return np.NaN
+   if row['Month'] == '03' :
+      return np.NaN
+   if row['Month'] == '04' :
+      return 'Nov-Apr'
+   if row['Month'] == '05' :
+      return np.NaN
+   if row['Month'] == '06' :
+      return np.NaN
+   if row['Month'] == '07' :
+      return np.NaN
+   if row['Month'] == '08' :
+      return np.NaN
+   if row['Month'] == '09' :
+      return np.NaN
+   if row['Month'] == '10' :
+      return np.NaN
+   if row['Month'] == '11' :
+      return 'Nov-Apr'
+   if row['Month'] == '12' :
+      return np.NaN  
+   return 'Other'
+
+def label_may_oct_month2 (row):
+   if row['Month'] == '01' :
+      return np.NaN
+   if row['Month'] == '02' :
+      return np.NaN
+   if row['Month'] == '03' :
+      return np.NaN
+   if row['Month'] == '04' :
+      return np.NaN
+   if row['Month'] == '05' :
+      return 'May-Oct'
+   if row['Month'] == '06' :
+      return np.NaN
+   if row['Month'] == '07' :
+      return np.NaN
+   if row['Month'] == '08' :
+      return np.NaN
+   if row['Month'] == '09' :
+      return np.NaN
+   if row['Month'] == '10' :
+      return 'May-Oct'
+   if row['Month'] == '11' :
+      return np.NaN
+   if row['Month'] == '12' :
+      return np.NaN  
+   return 'Other'
+
+#structure data - idea two - used
+
+def label_month2 (row):
+   if row['Month'] == '01' :
+      return 'Nov-Apr'
+   if row['Month'] == '02' :
+      return 'Nov-Apr'
+   if row['Month'] == '03' :
+      return 'Nov-Apr'
+   if row['Month'] == '04' :
+      return 'Nov-Apr'
+   if row['Month'] == '05' :
+      return 'May-Oct'
+   if row['Month'] == '06' :
+      return 'May-Oct'
+   if row['Month'] == '07' :
+      return 'May-Oct'
+   if row['Month'] == '08' :
+      return 'May-Oct'
+   if row['Month'] == '09' :
+      return 'May-Oct'
+   if row['Month'] == '10' :
+      return 'May-Oct'
+   if row['Month'] == '11' :
+      return 'Nov-Apr'
+   if row['Month'] == '12' :
+      return 'Nov-Apr' 
+   return 'Other'
+
+#create label column and drop NaN - idea 2
+# 'pop' = period over period
+# 'sos' = season over season; returns are 6 months apart;
+alpha_v2 = alpha_v.dropna(axis = 0, how ='any') 
+alpha_v2.drop(alpha_v2.index[:3], inplace=True)
+alpha_v2 = alpha_v2.reset_index(drop = True)
+
+#calculate returns e ery month and every 6 months
+alpha_v2['pct_pop'] = alpha_v2['Open'].pct_change()
+alpha_v2['pct_sos'] = alpha_v2['Open'].pct_change(6)
+alpha_v2['Season'] = alpha_v2.apply (lambda row: label_month2 (row),axis=1)
+
+#create label column and drop NaN - idea 1
+high_profit_market_av['Season'] = high_profit_market_av.apply (lambda row: label_nov_apr_month2 (row),axis=1)
+high_profit_market_av = high_profit_market_av.dropna(axis = 0, how ='any') 
+high_profit_market_av = high_profit_market_av.reset_index(drop = True)
+high_profit_market_av.drop(alpha_v.index[:1], inplace=True)
+high_profit_market_av = high_profit_market_av.reset_index(drop = True)
+
+low_profit_market_av['Season'] = low_profit_market_av.apply (lambda row: label_may_oct_month2 (row),axis=1)
+low_profit_market_av = low_profit_market_av.dropna(axis = 0, how ='any') 
+low_profit_market_av = low_profit_market_av.reset_index(drop = True)
+low_profit_market_av['Return'] = low_profit_market_av.Open.pct_change(1)
+
+
+
+###################################################
 
 #Specify the file path
 csvpath = os.path.join('market.csv')
@@ -314,53 +494,18 @@ plt.show()
 may_dec = market2.loc[market2["Season"] == "May-Dec" , : ]
 apr_nov = market2.loc[market2["Season"] == "Apr-Nov" , : ]
 
-plt.figure(figsize=(15, 6), dpi=80)
-
 # Generate the Plot
-plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.50)
+plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.50)
 
 plt.title("Average Total Return (May-Dec & Apr-Nov)")
 plt.ylabel("Total Return")
-plt.xlabel("Month in Season")
+plt.xlabel("")
 plt.grid(True)
-
 # plt.legend
 blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
 green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
 plt.legend(handles=[blue_patch, green_patch])
-
-# Save the Figure
-plt.savefig("may_dec_apr_nov.png")
-
-# Show the Figure
-plt.show()
-
-#-----------------------------------------------
-# Average Total Return Jul-Feb, Aug-Mar, Sep-Apr
-#-----------------------------------------------
-
-jul_feb = market2.loc[market2["Season"] == "Jul-Feb" , : ]
-aug_mar = market2.loc[market2["Season"] == "Aug-Mar" , : ]
-sep_apr = market2.loc[market2["Season"] == "Sep-Apr" , : ]
-
-plt.figure(figsize=(15, 6), dpi=80)
-
-# Generate the Plot
-plt.plot(jul_feb["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
-
-plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
-plt.ylabel("Total Return")
-plt.xlabel("Month in Season")
-plt.grid(True)
-
-# plt.legend
-blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
-red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
-plt.legend(handles=[blue_patch, green_patch, red_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
