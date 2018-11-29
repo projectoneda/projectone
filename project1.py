@@ -140,22 +140,24 @@ def label_month (row):
    if row['Month'] == '04' :
       return 'Nov-Apr'
    if row['Month'] == '05' :
-      return 'May-Oct'
+      return 'May-Dec'
    if row['Month'] == '06' :
-      return 'May-Oct'
+      return 'Jun-Jan'
    if row['Month'] == '07' :
-      return 'May-Oct'
+      return 'Jul-Feb'
    if row['Month'] == '08' :
-      return 'May-Oct'
+      return 'Aug-Mar'
    if row['Month'] == '09' :
-      return 'May-Oct'
+      return 'Sep-Apr'
    if row['Month'] == '10' :
-      return 'May-Oct'
+      return 'Oct-May'
    if row['Month'] == '11' :
-      return 'Nov-Apr'
+      return 'Nov-Jun'
    if row['Month'] == '12' :
-      return 'Nov-Apr' 
+      return 'Dec-Jul' 
    return 'Other'
+
+
 
 #create label column and drop NaN - idea 2
 # 'pop' = period over period
