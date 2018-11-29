@@ -138,7 +138,7 @@ def label_month (row):
    if row['Month'] == '03' :
       return 'Nov-Apr'
    if row['Month'] == '04' :
-      return 'Nov-Apr'
+      return 'Apr-Nov'
    if row['Month'] == '05' :
       return 'May-Dec'
    if row['Month'] == '06' :
@@ -270,8 +270,6 @@ May_Oct_Avgs = May_Oct["pct_sos"].mean()
 May_Oct_Avgs
 
 
-
-
 #---------------------------------------------
 # Average Total Return by Month
 #---------------------------------------------
@@ -294,7 +292,7 @@ plt.xlabel("Time (Years)")
 plt.grid(True)
 
 
-x = ['Apr-Nov', 'Aug-Mar', 'Dec-Jul', 'Jul-Feb', 'Jun-Jan', 'May-Dec', 'Nov-Apr', 'Nov-Jun', 'Oct-May', 'Sep-Apr']
+x = ['May-Dec', 'Apr-Nov', 'Jun-Jan', 'Nov-Apr', 'Jul-Feb', 'Aug-Mar', 'Sep-Apr', 'Dec-Jul', 'Oct-May', 'Nov-Jun']
 x_pos = [i for i, _ in enumerate(x)]
 plt.xticks(x_pos, x)
 
