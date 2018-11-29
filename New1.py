@@ -447,9 +447,6 @@ May_Oct_Avgs = May_Oct["pct_sos"].mean()
 
 May_Oct_Avgs
 
-
-
-
 #---------------------------------------------
 # Average Total Return by Month
 #---------------------------------------------
@@ -484,12 +481,18 @@ plt.savefig("avg_total_ret_sea.png")
 # Show the Figure
 plt.show()
 
+#---------------------------------------------
+# Average Total Return by Yeah and Season
+#  -May-Dec & Apr-Nov
+#---------------------------------------------
 
-# year_season = market2.groupby(['Year', 'Season'])['pct_sos'].mean()
-# year_season = pd.DataFrame(year_season)
-# year_season = reset_index
-may_dec = market2.loc[market2["Season"] == "May-Dec" , : ]
-apr_nov = market2.loc[market2["Season"] == "Apr-Nov" , : ]
+
+
+year_season = market2.groupby(['Year', 'Season'])['pct_sos'].mean()
+year_season = pd.DataFrame(year_season)
+year_season = year_season.reset_index()
+may_dec = year_season.loc[year_season["Season"] == "May-Dec" , : ]
+apr_nov = year_season.loc[year_season["Season"] == "Apr-Nov" , : ]
 
 plt.figure(figsize=(15, 6), dpi=80)
 
@@ -499,7 +502,7 @@ plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=
 
 plt.title("Average Total Return (May-Dec & Apr-Nov)")
 plt.ylabel("Total Return")
-plt.xlabel("Month in Season")
+plt.xlabel("Year & Season")
 plt.grid(True)
 
 # plt.legend
@@ -513,9 +516,15 @@ plt.savefig("may_dec_apr_nov.png")
 # Show the Figure
 plt.show()
 
-jul_feb = market2.loc[market2["Season"] == "Jul-Feb" , : ]
-aug_mar = market2.loc[market2["Season"] == "Aug-Mar" , : ]
-sep_apr = market2.loc[market2["Season"] == "Sep-Apr" , : ]
+#---------------------------------------------
+# Average Total Return by Yeah and Season
+#  -May-Dec & Apr-Nov
+#---------------------------------------------
+
+
+jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
+aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
+sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
 
 plt.figure(figsize=(15, 6), dpi=80)
 
@@ -526,7 +535,7 @@ plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=
 
 plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
 plt.ylabel("Total Return")
-plt.xlabel("Month in Season")
+plt.xlabel("Year & Season")
 plt.grid(True)
 
 # plt.legend
