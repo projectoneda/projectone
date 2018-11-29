@@ -12,21 +12,18 @@ import json
 import time
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+#from config import api_key
 from pprint import pprint
-import os
-from config import api_key
 import csv
 import os
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from alpha_vantage.timeseries import TimeSeries
-from pandas.io.json import json_normalize
 
 # URL for GET requests to retrieve vehicle data
 url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
 #Dons test to see if github works
 url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
-api = api_key
+api = "2AIJQKQXSZ6F4FE9"
 # ts = TimeSeries(key=api, output_format='pandas')
 #print(url+api)
 
@@ -196,9 +193,8 @@ low_profit_market_av = low_profit_market_av.dropna(axis = 0, how ='any')
 low_profit_market_av = low_profit_market_av.reset_index(drop = True)
 low_profit_market_av['Return'] = low_profit_market_av.Open.pct_change(1)
 
-
-
 ###################################################
+
 
 #Specify the file path
 csvpath = os.path.join('market.csv')
@@ -413,6 +409,7 @@ May_df = May_df.dropna()
 Nov_pop_avg = Nov_df["pct_sos"].mean() 
 May_pop_avg = May_df["pct_sos"].mean()
 
+
 #BAR CHART--------------------------------------------------
 
 #Create list of seasonal averages for bar chart values
@@ -428,14 +425,14 @@ ticks = market2["Season"].unique()
 bar_pos = [0,0.3]
 
 #Create plot
-#plt.bar(bar_pos,
-#        seas_avgs,
-#        width = 0.3,
-#        color = ["b","g"],
-#        tick_label = ticks, 
-#        align = "center")
-#
-#plt.xticks(bar_pos,ticks)
+plt.bar(bar_pos,
+        seas_avgs,
+        width = 0.3,
+        color = ["b","g"],
+        tick_label = ticks, 
+        align = "center")
+
+plt.xticks(bar_pos,ticks)
 
 
 May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
@@ -449,6 +446,8 @@ May_Oct_Avgp = May_Oct["pct_pop"].mean()
 May_Oct_Avgs = May_Oct["pct_sos"].mean()
 
 May_Oct_Avgs
+
+
 
 
 #---------------------------------------------
@@ -467,9 +466,9 @@ x_axis = np.arange(len(season))
 
 plt.bar(x_axis,barheight , color="gold", align="center")
 
-plt.title("Average Total Return")
+plt.title("Average Total Return (Seasons)")
 plt.ylabel("Total Return")
-plt.xlabel("Time (Years)")
+plt.xlabel("Time (Seasons)")
 plt.grid(True)
 
 
@@ -486,26 +485,55 @@ plt.savefig("avg_total_ret_sea.png")
 plt.show()
 
 
-#---------------------------------------------
-# Average Total Return May-Dec & Apr-Nov
-#---------------------------------------------
-
-
+# year_season = market2.groupby(['Year', 'Season'])['pct_sos'].mean()
+# year_season = pd.DataFrame(year_season)
+# year_season = reset_index
 may_dec = market2.loc[market2["Season"] == "May-Dec" , : ]
 apr_nov = market2.loc[market2["Season"] == "Apr-Nov" , : ]
 
+plt.figure(figsize=(15, 6), dpi=80)
+
 # Generate the Plot
-plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.50)
-plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.50)
+plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
 
 plt.title("Average Total Return (May-Dec & Apr-Nov)")
 plt.ylabel("Total Return")
-plt.xlabel("")
+plt.xlabel("Month in Season")
 plt.grid(True)
+
 # plt.legend
 blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
 green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
 plt.legend(handles=[blue_patch, green_patch])
+
+# Save the Figure
+plt.savefig("may_dec_apr_nov.png")
+
+# Show the Figure
+plt.show()
+
+jul_feb = market2.loc[market2["Season"] == "Jul-Feb" , : ]
+aug_mar = market2.loc[market2["Season"] == "Aug-Mar" , : ]
+sep_apr = market2.loc[market2["Season"] == "Sep-Apr" , : ]
+
+plt.figure(figsize=(15, 6), dpi=80)
+
+# Generate the Plot
+plt.plot(jul_feb["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+
+plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
+plt.ylabel("Total Return")
+plt.xlabel("Month in Season")
+plt.grid(True)
+
+# plt.legend
+blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
+red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
+plt.legend(handles=[blue_patch, green_patch, red_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
