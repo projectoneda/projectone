@@ -328,7 +328,7 @@ green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
 plt.legend(handles=[blue_patch, green_patch])
 
 # Save the Figure
-plt.savefig("analysis/Fig3.png")
+plt.savefig("may_dec_apr_nov.png")
 
 # Show the Figure
 plt.show()
