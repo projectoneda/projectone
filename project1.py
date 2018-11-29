@@ -303,3 +303,31 @@ plt.savefig("avg_total_ret_sea.png")
 
 # Show the Figure
 plt.show()
+
+
+#---------------------------------------------
+# Average Total Return May-Dec & Apr-Nov
+#---------------------------------------------
+
+
+may_dec = market2.loc[market2["Season"] == "May-Dec" , : ]
+apr_nov = market2.loc[market2["Season"] == "Apr-Nov" , : ]
+
+# Generate the Plot
+plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.50)
+plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.50)
+
+plt.title("Average Total Return (May-Dec & Apr-Nov)")
+plt.ylabel("Total Return")
+plt.xlabel("")
+plt.grid(True)
+# plt.legend
+blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
+plt.legend(handles=[blue_patch, green_patch])
+
+# Save the Figure
+plt.savefig("analysis/Fig3.png")
+
+# Show the Figure
+plt.show()
