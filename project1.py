@@ -248,14 +248,14 @@ ticks = market2["Season"].unique()
 bar_pos = [0,0.3]
 
 #Create plot
-plt.bar(bar_pos,
-        seas_avgs,
-        width = 0.3,
-        color = ["b","g"],
-        tick_label = ticks, 
-        align = "center")
-
-plt.xticks(bar_pos,ticks)
+#plt.bar(bar_pos,
+#        seas_avgs,
+#        width = 0.3,
+#        color = ["b","g"],
+#        tick_label = ticks, 
+#        align = "center")
+#
+#plt.xticks(bar_pos,ticks)
 
 
 May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
