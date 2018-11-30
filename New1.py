@@ -19,179 +19,7 @@ from pprint import pprint
 import csv
 import os
 
-# URL for GET requests to retrieve vehicle data
-url = "https://api.iextrading.com/1.0/stock/aapl/chart/1Y"
-#Dons test to see if github works
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=.inx&apikey="
-api = "2AIJQKQXSZ6F4FE9"
-# ts = TimeSeries(key=api, output_format='pandas')
-#print(url+api)
 
-# Pretty print JSON for all launchpads
-response = requests.get(url+api).json()
-#print(json.dumps(response, indent=4, sort_keys=True))
-#pprint(response)
-# data, meta_data = ts.get_monthly(symbol= ".inix")
-# pprint(data.head(2))
-
-alpha_df = response["Monthly Time Series"]
-#alpha_df
-
-alpha_df2= pd.DataFrame.from_dict(alpha_df, orient = 'index')
-
-# alpha_df2.rename_axis('Date')
-alpha_df3 = alpha_df2.reset_index()
-alpha_df4=alpha_df3.rename(columns= {"index":"Date","1. open":"Open","4. close": "Close","5. volume": "Volume"})
-alpha_v= alpha_df4.drop(columns=["2. high","3. low"])
-alpha_v[["Open", "Close"]] = alpha_v[["Open", "Close"]].astype(float)
-#alpha_v.head(10)
-
-# new data frame with split value columns 
-market_data2 = alpha_v["Date"].str.split("-", n = 1, expand = True) 
-  
-# making seperate first name column from new data frame 
-alpha_v["Year"] = market_data2[0] 
-  
-# making seperate last name column from new data frame 
-alpha_v["stuff"] = market_data2[1] 
-
-#market["Day"] = market_data[2]
-  
-# Dropping old Name columns 
-#market.drop(columns =["Date"], inplace = True) 
-
-# new data frame with split value columns 
-market_data2 = alpha_v["stuff"].str.split("-", n = 1, expand = True) 
-
-# making seperate first name column from new data frame 
-alpha_v["Month"] = market_data2[0] 
-  
-# making seperate last name column from new data frame 
-alpha_v["Day"] = market_data2[1] 
-# market2.drop(columns =["High"], inplace = True) 
-# market.drop(columns =["Low"], inplace = True) 
-# # market.drop(columns =["Open"], inplace = True) 
-# market.drop(columns =["Close"], inplace = True) 
-# market2.rename(columns={'Adj Close':'Close'}, inplace=True)
-
-# Dropping old Name columns 
-alpha_v.drop(columns =["stuff"], inplace = True) 
-# df display 
-#alpha_v.head(10)
-
-alpha_v2 = alpha_v
-alpha_v3 = alpha_v
-
-#initalize market types
-high_profit_market_av = alpha_v
-low_profit_market_av = alpha_v
-
-def label_nov_apr_month2 (row):
-   if row['Month'] == '01' :
-      return np.NaN
-   if row['Month'] == '02' :
-      return np.NaN
-   if row['Month'] == '03' :
-      return np.NaN
-   if row['Month'] == '04' :
-      return 'Nov-Apr'
-   if row['Month'] == '05' :
-      return np.NaN
-   if row['Month'] == '06' :
-      return np.NaN
-   if row['Month'] == '07' :
-      return np.NaN
-   if row['Month'] == '08' :
-      return np.NaN
-   if row['Month'] == '09' :
-      return np.NaN
-   if row['Month'] == '10' :
-      return np.NaN
-   if row['Month'] == '11' :
-      return 'Nov-Apr'
-   if row['Month'] == '12' :
-      return np.NaN  
-   return 'Other'
-
-def label_may_oct_month2 (row):
-   if row['Month'] == '01' :
-      return np.NaN
-   if row['Month'] == '02' :
-      return np.NaN
-   if row['Month'] == '03' :
-      return np.NaN
-   if row['Month'] == '04' :
-      return np.NaN
-   if row['Month'] == '05' :
-      return 'May-Oct'
-   if row['Month'] == '06' :
-      return np.NaN
-   if row['Month'] == '07' :
-      return np.NaN
-   if row['Month'] == '08' :
-      return np.NaN
-   if row['Month'] == '09' :
-      return np.NaN
-   if row['Month'] == '10' :
-      return 'May-Oct'
-   if row['Month'] == '11' :
-      return np.NaN
-   if row['Month'] == '12' :
-      return np.NaN  
-   return 'Other'
-
-#structure data - idea two - used
-
-def label_month2 (row):
-   if row['Month'] == '01' :
-      return 'Nov-Apr'
-   if row['Month'] == '02' :
-      return 'Nov-Apr'
-   if row['Month'] == '03' :
-      return 'Nov-Apr'
-   if row['Month'] == '04' :
-      return 'Nov-Apr'
-   if row['Month'] == '05' :
-      return 'May-Oct'
-   if row['Month'] == '06' :
-      return 'May-Oct'
-   if row['Month'] == '07' :
-      return 'May-Oct'
-   if row['Month'] == '08' :
-      return 'May-Oct'
-   if row['Month'] == '09' :
-      return 'May-Oct'
-   if row['Month'] == '10' :
-      return 'May-Oct'
-   if row['Month'] == '11' :
-      return 'Nov-Apr'
-   if row['Month'] == '12' :
-      return 'Nov-Apr' 
-   return 'Other'
-
-#create label column and drop NaN - idea 2
-# 'pop' = period over period
-# 'sos' = season over season; returns are 6 months apart;
-alpha_v2 = alpha_v.dropna(axis = 0, how ='any') 
-alpha_v2.drop(alpha_v2.index[:3], inplace=True)
-alpha_v2 = alpha_v2.reset_index(drop = True)
-
-#calculate returns e ery month and every 6 months
-alpha_v2['pct_pop'] = alpha_v2['Open'].pct_change()
-alpha_v2['pct_sos'] = alpha_v2['Open'].pct_change(6)
-alpha_v2['Season'] = alpha_v2.apply (lambda row: label_month2 (row),axis=1)
-
-#create label column and drop NaN - idea 1
-high_profit_market_av['Season'] = high_profit_market_av.apply (lambda row: label_nov_apr_month2 (row),axis=1)
-high_profit_market_av = high_profit_market_av.dropna(axis = 0, how ='any') 
-high_profit_market_av = high_profit_market_av.reset_index(drop = True)
-high_profit_market_av.drop(alpha_v.index[:1], inplace=True)
-high_profit_market_av = high_profit_market_av.reset_index(drop = True)
-
-low_profit_market_av['Season'] = low_profit_market_av.apply (lambda row: label_may_oct_month2 (row),axis=1)
-low_profit_market_av = low_profit_market_av.dropna(axis = 0, how ='any') 
-low_profit_market_av = low_profit_market_av.reset_index(drop = True)
-low_profit_market_av['Return'] = low_profit_market_av.Open.pct_change(1)
 
 ###################################################
 
@@ -249,92 +77,35 @@ low_profit_market = market
 #print (market2.head())
 #print (market3.head())
 
-#structure data - idea 1 
-
-def label_nov_apr_month (row):
-   if row['Month'] == '01' :
-      return np.NaN
-   if row['Month'] == '02' :
-      return np.NaN
-   if row['Month'] == '03' :
-      return np.NaN
-   if row['Month'] == '04' :
-      return 'Nov-Apr'
-   if row['Month'] == '05' :
-      return np.NaN
-   if row['Month'] == '06' :
-      return np.NaN
-   if row['Month'] == '07' :
-      return np.NaN
-   if row['Month'] == '08' :
-      return np.NaN
-   if row['Month'] == '09' :
-      return np.NaN
-   if row['Month'] == '10' :
-      return np.NaN
-   if row['Month'] == '11' :
-      return 'Nov-Apr'
-   if row['Month'] == '12' :
-      return np.NaN  
-   return 'Other'
-
-def label_may_oct_month (row):
-   if row['Month'] == '01' :
-      return np.NaN
-   if row['Month'] == '02' :
-      return np.NaN
-   if row['Month'] == '03' :
-      return np.NaN
-   if row['Month'] == '04' :
-      return np.NaN
-   if row['Month'] == '05' :
-      return 'May-Oct'
-   if row['Month'] == '06' :
-      return np.NaN
-   if row['Month'] == '07' :
-      return np.NaN
-   if row['Month'] == '08' :
-      return np.NaN
-   if row['Month'] == '09' :
-      return np.NaN
-   if row['Month'] == '10' :
-      return 'May-Oct'
-   if row['Month'] == '11' :
-      return np.NaN
-   if row['Month'] == '12' :
-      return np.NaN  
-   return 'Other'
 
 #structure data - idea two - used
 
 def label_month (row):
-   if row['Month'] == '01' :
-      return 'Nov-Apr'
-   if row['Month'] == '02' :
-      return 'Nov-Apr'
-   if row['Month'] == '03' :
-      return 'Nov-Apr'
-   if row['Month'] == '04' :
-      return 'Apr-Nov'
-   if row['Month'] == '05' :
-      return 'May-Dec'
-   if row['Month'] == '06' :
-      return 'Jun-Jan'
-   if row['Month'] == '07' :
-      return 'Jul-Feb'
-   if row['Month'] == '08' :
-      return 'Aug-Mar'
-   if row['Month'] == '09' :
-      return 'Sep-Apr'
-   if row['Month'] == '10' :
-      return 'Oct-May'
-   if row['Month'] == '11' :
-      return 'Nov-Jun'
-   if row['Month'] == '12' :
-      return 'Dec-Jul' 
-   return 'Other'
-
-
+  if row['Month'] == '01' :
+     return 'Jul-Dec'
+  if row['Month'] == '02' :
+     return 'Aug-Jan'
+  if row['Month'] == '03' :
+     return 'Sep-Feb'
+  if row['Month'] == '04' :
+     return 'Oct-Mar'
+  if row['Month'] == '05' :
+     return 'Nov-Apr'
+  if row['Month'] == '06' :
+     return 'Dec-May'
+  if row['Month'] == '07' :
+     return 'Jan-Jun'
+  if row['Month'] == '08' :
+     return 'Feb-Jul'
+  if row['Month'] == '09' :
+     return 'Mar-Aug'
+  if row['Month'] == '10' :
+     return 'Apr-Sep'
+  if row['Month'] == '11' :
+     return 'May-Oct'
+  if row['Month'] == '12' :
+     return 'Jun-Nov'
+  return 'Other'
 
 #create label column and drop NaN - idea 2
 # 'pop' = period over period
@@ -350,55 +121,12 @@ market2['pct_sos'] = market2['Open'].pct_change(6)
 market2['Season'] = market2.apply (lambda row: label_month (row),axis=1)
 market2 = market2[['Date', 'Open', 'pct_sos', 'Month', 'Year', 'pct_pop', 'Season', 'Close']]
 
-
-#create label column and drop NaN - idea 1
-high_profit_market['Season'] = high_profit_market.apply (lambda row: label_nov_apr_month (row),axis=1)
-high_profit_market = high_profit_market.dropna(axis = 0, how ='any') 
-high_profit_market = high_profit_market.reset_index(drop = True)
-high_profit_market.drop(market.index[:1], inplace=True)
-high_profit_market = high_profit_market.reset_index(drop = True)
-
-low_profit_market['Season'] = low_profit_market.apply (lambda row: label_may_oct_month (row),axis=1)
-low_profit_market = low_profit_market.dropna(axis = 0, how ='any') 
-low_profit_market = low_profit_market.reset_index(drop = True)
-low_profit_market['Return'] = low_profit_market.Open.pct_change(1)
-
-#view data
-#print (high_profit_market.head())
-#print (low_profit_market.head())
-#print (market2.head(20))
-
-#filter1 = market2.groupby.Season.values()
-#print (filter1.head())
+market2.head()
 
 # Export the results to text file
 market2.to_csv('market2.csv', index = False)
-high_profit_market.to_csv('high_profit_market.csv', index = False)
-low_profit_market.to_csv('low_profit_market.csv', index = False)
-
 
 # Track various financial parameters
-
-
-#---------------------------------------------
-#CHARTS
-#---------------------------------------------
-
-#Average Return % by Season (for all years)
-
-#Group by year and time period 
-#Market_By_Season = market2.groupby(["Year","Season"]).mean()
-##Market_By_Season.head()
-#
-#Market_By_Season = Market_By_Season.reset_index()
-##Market_By_Season.head()
-#
-##Filter Market_by_Season dataframe by Season column to only include May-Oct
-#May_Oct = Market_By_Season.loc[Market_By_Season["Season"]== "May-Oct",:]
-#May_Oct.head()
-
-#Filter market2 df by Season column for May-Oct and Nov-Apr
-#------------------------------------------------------------------
 
 #Filter market2 df by Month Nov(11) and May(5)
 Nov_df = market2.loc[market2["Month"] == "11" , : ]
@@ -431,10 +159,13 @@ bar_pos = [0,0.3]
 #        color = ["b","g"],
 #        tick_label = ticks, 
 #        align = "center")
+#
+#plt.show()
 
 
 May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
 #Filter May_Oct df by Month to only show pop returns  
+May_Oct.head()
 
 
 Nov_Apr = market2.loc[market2["Season"] == "Nov-Apr" , :]
@@ -456,7 +187,7 @@ sort2 = sort.reset_index()
 barheight = sort2["pct_sos"]
 ax = plt.subplots(figsize=(10,4))
 
-# Generate the Plot 
+# Generate the Plot
 x_axis = np.arange(len(season))
 
 plt.bar(x_axis,barheight , color="gold", align="center")
@@ -466,10 +197,10 @@ plt.ylabel("Total Return")
 plt.xlabel("Time (Seasons)")
 plt.grid(True)
 
-
-x = ['Dec-May', 'Nov-Apr', 'Jan-Jun', 'Apr-Nov', 'Feb-Jul', 'Mar-Aug', 'Apr-Sep', 'Jul-Dec', 'May-Oct', 'Jun-Nov']
-x_pos = [i for i, _ in enumerate(x)]
-plt.xticks(x_pos, x)
+sort3 = sort2.drop(columns=['pct_sos'])
+sort3 = sort3["Season"].tolist()
+x_pos = [i for i, _ in enumerate(sort3)]
+plt.xticks(x_pos, sort3)
 
 
 
@@ -478,7 +209,6 @@ plt.savefig("avg_total_ret_sea.png")
 
 # Show the Figure
 plt.show()
-
 #---------------------------------------------
 # Average Total Return by Yeah and Season
 #  -May-Dec & Apr-Nov
@@ -490,19 +220,120 @@ year_season = market2.groupby(['Year', 'Season'])['pct_sos'].mean()
 year_season = pd.DataFrame(year_season)
 year_season = year_season.reset_index()
 
-#Remove 1950 (the year) from dataframe
-year_season["Year"] = pd.to_numeric(year_season["Year"])
+year_season.head()
+#
+##Remove 1950 (the year) from dataframe
+#year_season["Year"] = pd.to_numeric(year_season["Year"])
+#
+#may_dec = year_season.loc[year_season["Season"] == "May-Dec" , : ]
+#apr_nov = year_season.loc[year_season["Season"] == "Apr-Nov" , : ]
+#
+#plt.figure(figsize=(15, 6), dpi=80)
+#
+## Generate the Plot
+#plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+#plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+#
+#plt.title("Average Total Return (May-Dec & Apr-Nov)")
+#plt.ylabel("Total Return")
+#plt.xlabel("Year & Season")
+#plt.xticks()
+#plt.grid(True)
+#
+## plt.legend
+#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+#green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
+#plt.legend(handles=[blue_patch, green_patch])
+#
+## Save the Figure
+#plt.savefig("may_dec_apr_nov.png")
+#
+## Show the Figure
+#plt.show()
+#
+##---------------------------------------------
+## Average Total Return by Yeah and Season
+##  -May-Dec & Apr-Nov
+##---------------------------------------------
+#
+#
+#jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
+#aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
+#sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
+#
+#plt.figure(figsize=(15, 6), dpi=80)
+#
+##Define y variables for plot
+#y_jul_feb = jul_feb["pct_sos"].dropna()
+#y_jul_feb
+#
+#
+##Define year variable for x tick labels
+#years = year_season["Year"].unique()
+#years_list = year_season["Year"].unique().tolist()
+#length = len(years_list)
+#length 
+#
+## Generate the Plot
+#plt.plot(y_jul_feb, "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+#plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+#plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+#
+#plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
+#plt.ylabel("Total Return")
+#plt.xlabel("Year & Season")
+#plt.grid(True)
+#
+##Set x axis tick labels
+#
+#tick_locs = plt.xticks()
+#tick_locs
+#
+#plt.xticks(tick_locs,years_list)
+#
+## plt.legend
+#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+#green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
+#red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
+#plt.legend(handles=[blue_patch, green_patch, red_patch])
+#
+## Save the Figure
+#plt.savefig("may_dec_apr_nov.png")
+#
+## Show the Figure
+#plt.show()
 
-may_dec = year_season.loc[year_season["Season"] == "May-Dec" , : ]
-apr_nov = year_season.loc[year_season["Season"] == "Apr-Nov" , : ]
+
+#----------------------------------------------------------------
+#DON START HERE FOR NOV 29 LAST MINUTE CHANGES
+#JOSE SCROLL DOWN TO LINE 1000
+#----------------------------------------------------------------
+
+#THIS WAS ALL JUST COPIED FROM LINES 489-572 ABOVE SO THAT I COULD COMMENT THEM OUT
+#DID THIS SO THAT ALL NOV 29 CHANGES WOULD START AT LINE 579
+
+#Remove 1950 (the year) from dataframe
+#Convert Year column from object to numeric
+year_season["Year"] = pd.to_numeric(year_season["Year"])
+year_season = year_season.drop(year_season[year_season.Year < 1951].index)
+
+#Create variable to hold list of years
+years = year_season["Year"].unique()
+years_list = year_season["Year"].unique().tolist()
+
+
+may_dec = year_season.loc[year_season["Season"] == "Dec-May" , : ]
+apr_nov = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
+
+may_dec.head()
 
 plt.figure(figsize=(15, 6), dpi=80)
 
 # Generate the Plot
-plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
 
-plt.title("Average Total Return (May-Dec & Apr-Nov)")
+plt.title("Average Percentage Change (May-Dec & Apr-Nov)")
 plt.ylabel("Total Return")
 plt.xlabel("Year & Season")
 plt.xticks()
@@ -525,60 +356,85 @@ plt.show()
 #---------------------------------------------
 
 
-jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
-aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
-sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
+
+#jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
+#aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
+#sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
+#
+#plt.figure(figsize=(15, 6), dpi=80)
+#
+##Define y variables for plot
+#y_jul_feb = jul_feb["pct_sos"].dropna()
+#y_jul_feb
+#
+#
+##Define year variable for x tick labels
+#years = year_season["Year"].unique()
+#years_list = year_season["Year"].unique().tolist()
+#length = len(years_list)
+#length 
+#
+## Generate the Plot
+#plt.plot(years_list,y_jul_feb, "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+#plt.plot(years_list,aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+##plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+#
+#plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
+#plt.ylabel("Total Return")
+#plt.xlabel("Year & Season")
+#plt.grid(True)
+#
+##Set x axis tick labels
+#
+#tick_locs = plt.xticks()
+#tick_locs
+#
+#plt.xticks(tick_locs,years_list)
+#
+## plt.legend
+#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
+#green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
+#red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
+#plt.legend(handles=[blue_patch, green_patch, red_patch])
+#
+## Save the Figure
+#plt.savefig("may_dec_apr_nov.png")
+#
+## Show the Figure
+#plt.show()
+
+#---------------------------------------------
+# Average Total Return by Yeah and Season
+#  -Nov-Apr & May-Oct
+#---------------------------------------------
+
+
+nov_apr = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
+may_oct = year_season.loc[year_season["Season"] == "May-Oct" , : ]
+
+nov_apr.head()
 
 plt.figure(figsize=(15, 6), dpi=80)
 
-#Define y variables for plot
-y_jul_feb = jul_feb["pct_sos"].dropna()
-y_jul_feb
-
-
-#Define year variable for x tick labels
-years = year_season["Year"].unique()
-years_list = year_season["Year"].unique().tolist()
-length = len(years_list)
-length 
-
 # Generate the Plot
-plt.plot(y_jul_feb, "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,nov_apr["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,may_oct["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
 
-plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
+plt.title("Average Total Return (Nov-Apr & May-Oct)")
 plt.ylabel("Total Return")
 plt.xlabel("Year & Season")
 plt.grid(True)
 
-#Set x axis tick labels
-
-tick_locs = plt.xticks()
-tick_locs
-
-plt.xticks(tick_locs,years_list)
-
 # plt.legend
-blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
-red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
-plt.legend(handles=[blue_patch, green_patch, red_patch])
+blue_patch = mpatches.Patch(color='Blue', label='Nov-Apr')
+red_patch = mpatches.Patch(color='red', label='May-Oct')
+plt.legend(handles=[blue_patch, red_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
 
 # Show the Figure
 plt.show()
-
-
-#----------------------------------------------------------------
-#DON START HERE FOR NOV 29 LAST MINUTE CHANGES
-#JOSE SCROLL DOWN TO LINE 1000
-#----------------------------------------------------------------
-
-
-
 
 
 
