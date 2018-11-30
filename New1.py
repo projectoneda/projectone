@@ -19,10 +19,7 @@ from pprint import pprint
 import csv
 import os
 
-
-
 ###################################################
-
 
 #Specify the file path
 csvpath = os.path.join('market.csv')
@@ -65,20 +62,7 @@ market.drop(columns =["Day"], inplace = True)
 # Export the results to text file
 market.to_csv('market_data.csv', index = False)
 
-market2 = market
-market3 = market
-
-#initalize market types
-high_profit_market = market
-low_profit_market = market
-
-#df display 
-#print (market.head()) 
-#print (market2.head())
-#print (market3.head())
-
-
-#structure data - idea two - used
+#structure data
 
 def label_month (row):
   if row['Month'] == '01' :
@@ -143,24 +127,44 @@ May_pop_avg = May_df["pct_sos"].mean()
 #Create list of seasonal averages for bar chart values
 seas_avgs = [May_pop_avg,Nov_pop_avg]
 
-#Create x value locations
-
 #Create tick labels
-ticks = market2["Season"].unique()
+ticks = [ "Nov-Apr" , "May-Oct" ]
 
-#Set space between bars
-bar_pos = [0,0.3]
+#Set bar locations on x axis
+bar_pos = [0,0.65]
 
 #Create plot
-#plt.bar(bar_pos,
-#        seas_avgs,
-#        width = 0.3,
-#        color = ["b","g"],
-#        tick_label = ticks, 
-#        align = "center")
+barc = plt.bar(bar_pos,
+        seas_avgs,
+        width = 0.4,
+        color = ["b","g"],
+        tick_label = ticks, 
+        align = "center")
 
-plt.show()
-plt.clf()
+#Hide Y axis
+barc_ax = plt.axes()
+barc_y = barc_ax.axes.get_yaxis()
+barc_y.set_visible(False)
+
+#Add chart title and adjust y axis limit
+plt.title("S&P500 Average % Return Over Time Period")
+plt.ylim(0,0.08)
+
+#Define function to label bar chart (i.e. copy it from the internet)
+def autolabel(bars):
+    """
+    Attach a text label above each bar displaying its height
+    Copied from https://matplotlib.org/examples/api/barchart_demo.html
+    
+    """
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2.,1.05*height,
+                 '{:.1%}'.format(height),
+                 ha='center', va='bottom')
+autolabel(barc)
+
+plt.savefig("avg_returns_bar.png")
 
 #---------------------------------------------
 # Average Total Return by Month
@@ -194,7 +198,7 @@ plt.xticks(x_pos, sort3)
 plt.savefig("avg_total_ret_sea.png")
 
 # Show the Figure
-plt.show()
+#plt.show()
 #---------------------------------------------
 # Average Total Return by Year and Season
 #  -May-Dec & Apr-Nov
@@ -217,8 +221,6 @@ years_list = year_season["Year"].unique().tolist()
 
 Oct_Mar = year_season.loc[year_season["Season"] == "Oct-Mar" , : ]
 Nov_Apr = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
-
-Oct_Mar.head()
 
 plt.figure(figsize=(15, 6), dpi=80)
 
@@ -319,6 +321,6 @@ plt.legend(handles=[green_patch, red_patch])
 plt.savefig("may_dec_apr_nov.png")
 
 # Show the Figure
-plt.show()
+#plt.show()
 
 
