@@ -196,8 +196,9 @@ plt.savefig("avg_total_ret_sea.png")
 # Show the Figure
 plt.show()
 #---------------------------------------------
-# Average Total Return by Yeah and Season
+# Average Total Return by Year and Season
 #  -May-Dec & Apr-Nov
+# Nov-Apr & Oct-Mar
 #---------------------------------------------
 
 
@@ -214,30 +215,30 @@ year_season = year_season.drop(year_season[year_season.Year < 1951].index)
 #Create variable to hold list of years
 years_list = year_season["Year"].unique().tolist()
 
-may_dec = year_season.loc[year_season["Season"] == "Dec-May" , : ]
-apr_nov = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
+Oct_Mar = year_season.loc[year_season["Season"] == "Oct-Mar" , : ]
+Nov_Apr = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
 
-may_dec.head()
+Oct_Mar.head()
 
 plt.figure(figsize=(15, 6), dpi=80)
 
 # Generate the Plot
-plt.plot(years_list,may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(years_list,apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,Oct_Mar["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,Nov_Apr["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
 
-plt.title("Average Percentage Change (May-Dec & Apr-Nov)")
+plt.title("Average Percentage Change (Oct-Mar & Nov-Apr)")
 plt.ylabel("Total Return")
 plt.xlabel("Year & Season")
 plt.xticks()
 plt.grid(True)
 
 # plt.legend
-blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
+blue_patch = mpatches.Patch(color='Blue', label='Oct-Mar')
+green_patch = mpatches.Patch(color='Green', label='Nov-Apr')
 plt.legend(handles=[blue_patch, green_patch])
 
 # Save the Figure
-plt.savefig("may_dec_apr_nov.png")
+plt.savefig("oct_mar_nov_apr.png")
 
 # Show the Figure
 #plt.show()
@@ -262,9 +263,9 @@ y_jul_feb
 years_list = year_season["Year"].unique().tolist() 
 
 # Generate the Plot
-plt.plot(years_list,jul_feb["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(years_list,aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-plt.plot(years_list,sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,jul_feb["pct_sos"], "yo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,aug_mar["pct_sos"], "mo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,sep_apr["pct_sos"], "ko", linestyle="dashed", markersize=10, linewidth=1.5)
 
 plt.title("Average Total Return (Feb-Jul, Mar-Aug, & Apr-Sep)")
 plt.ylabel("Total Return")
@@ -276,10 +277,10 @@ plt.grid(True)
 
 plt.legend()
 
-blue_patch = mpatches.Patch(color='Blue', label='Feb-Jul')
-green_patch = mpatches.Patch(color='Green', label='Mar-Aug')
-red_patch = mpatches.Patch(color='Red', label='Apr-Sep')
-plt.legend(handles=[blue_patch, green_patch, red_patch])
+olive_patch = mpatches.Patch(color="y", label='Feb-Jul')
+purple_patch = mpatches.Patch(color="m", label='Mar-Aug')
+black_patch = mpatches.Patch(color="k", label='Apr-Sep')
+plt.legend(handles=[olive_patch, purple_patch, black_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
@@ -301,7 +302,7 @@ nov_apr.head()
 plt.figure(figsize=(15, 6), dpi=80)
 
 # Generate the Plot
-plt.plot(years_list,nov_apr["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,nov_apr["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
 plt.plot(years_list,may_oct["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
 
 plt.title("Average Total Return (Nov-Apr & May-Oct)")
@@ -310,9 +311,9 @@ plt.xlabel("Year & Season")
 plt.grid(True)
 
 # plt.legend
-blue_patch = mpatches.Patch(color='Blue', label='Nov-Apr')
+green_patch = mpatches.Patch(color='green', label='Nov-Apr')
 red_patch = mpatches.Patch(color='red', label='May-Oct')
-plt.legend(handles=[blue_patch, red_patch])
+plt.legend(handles=[green_patch, red_patch])
 
 # Save the Figure
 plt.savefig("may_dec_apr_nov.png")
