@@ -144,7 +144,6 @@ May_pop_avg = May_df["pct_sos"].mean()
 seas_avgs = [May_pop_avg,Nov_pop_avg]
 
 #Create x value locations
-x_axis = np.arange(len(seas_avgs))
 
 #Create tick labels
 ticks = market2["Season"].unique()
@@ -159,22 +158,9 @@ bar_pos = [0,0.3]
 #        color = ["b","g"],
 #        tick_label = ticks, 
 #        align = "center")
-#
-#plt.show()
 
-
-May_Oct = market2.loc[market2["Season"] == "May-Oct", : ]
-#Filter May_Oct df by Month to only show pop returns  
-May_Oct.head()
-
-
-Nov_Apr = market2.loc[market2["Season"] == "Nov-Apr" , :]
-
-#Calculate average pop and sos returns for different time periods
-May_Oct_Avgp = May_Oct["pct_pop"].mean()
-May_Oct_Avgs = May_Oct["pct_sos"].mean()
-
-May_Oct_Avgs
+plt.show()
+plt.clf()
 
 #---------------------------------------------
 # Average Total Return by Month
@@ -220,107 +206,13 @@ year_season = market2.groupby(['Year', 'Season'])['pct_sos'].mean()
 year_season = pd.DataFrame(year_season)
 year_season = year_season.reset_index()
 
-year_season.head()
-#
-##Remove 1950 (the year) from dataframe
-#year_season["Year"] = pd.to_numeric(year_season["Year"])
-#
-#may_dec = year_season.loc[year_season["Season"] == "May-Dec" , : ]
-#apr_nov = year_season.loc[year_season["Season"] == "Apr-Nov" , : ]
-#
-#plt.figure(figsize=(15, 6), dpi=80)
-#
-## Generate the Plot
-#plt.plot(may_dec["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-#plt.plot(apr_nov["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-#
-#plt.title("Average Total Return (May-Dec & Apr-Nov)")
-#plt.ylabel("Total Return")
-#plt.xlabel("Year & Season")
-#plt.xticks()
-#plt.grid(True)
-#
-## plt.legend
-#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-#green_patch = mpatches.Patch(color='Green', label='Apr-Nov')
-#plt.legend(handles=[blue_patch, green_patch])
-#
-## Save the Figure
-#plt.savefig("may_dec_apr_nov.png")
-#
-## Show the Figure
-#plt.show()
-#
-##---------------------------------------------
-## Average Total Return by Yeah and Season
-##  -May-Dec & Apr-Nov
-##---------------------------------------------
-#
-#
-#jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
-#aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
-#sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
-#
-#plt.figure(figsize=(15, 6), dpi=80)
-#
-##Define y variables for plot
-#y_jul_feb = jul_feb["pct_sos"].dropna()
-#y_jul_feb
-#
-#
-##Define year variable for x tick labels
-#years = year_season["Year"].unique()
-#years_list = year_season["Year"].unique().tolist()
-#length = len(years_list)
-#length 
-#
-## Generate the Plot
-#plt.plot(y_jul_feb, "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-#plt.plot(aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-#plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
-#
-#plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
-#plt.ylabel("Total Return")
-#plt.xlabel("Year & Season")
-#plt.grid(True)
-#
-##Set x axis tick labels
-#
-#tick_locs = plt.xticks()
-#tick_locs
-#
-#plt.xticks(tick_locs,years_list)
-#
-## plt.legend
-#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-#green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
-#red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
-#plt.legend(handles=[blue_patch, green_patch, red_patch])
-#
-## Save the Figure
-#plt.savefig("may_dec_apr_nov.png")
-#
-## Show the Figure
-#plt.show()
-
-
-#----------------------------------------------------------------
-#DON START HERE FOR NOV 29 LAST MINUTE CHANGES
-#JOSE SCROLL DOWN TO LINE 1000
-#----------------------------------------------------------------
-
-#THIS WAS ALL JUST COPIED FROM LINES 489-572 ABOVE SO THAT I COULD COMMENT THEM OUT
-#DID THIS SO THAT ALL NOV 29 CHANGES WOULD START AT LINE 579
-
 #Remove 1950 (the year) from dataframe
 #Convert Year column from object to numeric
 year_season["Year"] = pd.to_numeric(year_season["Year"])
 year_season = year_season.drop(year_season[year_season.Year < 1951].index)
 
 #Create variable to hold list of years
-years = year_season["Year"].unique()
 years_list = year_season["Year"].unique().tolist()
-
 
 may_dec = year_season.loc[year_season["Season"] == "Dec-May" , : ]
 apr_nov = year_season.loc[year_season["Season"] == "Nov-Apr" , : ]
@@ -348,59 +240,51 @@ plt.legend(handles=[blue_patch, green_patch])
 plt.savefig("may_dec_apr_nov.png")
 
 # Show the Figure
-plt.show()
+#plt.show()
 
 #---------------------------------------------
 # Average Total Return by Yeah and Season
 #  -May-Dec & Apr-Nov
 #---------------------------------------------
 
+jul_feb = year_season.loc[year_season["Season"] == "Feb-Jul" , : ]
+aug_mar = year_season.loc[year_season["Season"] == "Mar-Aug" , : ]
+sep_apr = year_season.loc[year_season["Season"] == "Apr-Sep" , : ]
+
+plt.figure(figsize=(15, 6), dpi=80)
+
+#Define y variables for plot
+y_jul_feb = jul_feb["pct_sos"].dropna()
+y_jul_feb
 
 
-#jul_feb = year_season.loc[year_season["Season"] == "Jul-Feb" , : ]
-#aug_mar = year_season.loc[year_season["Season"] == "Aug-Mar" , : ]
-#sep_apr = year_season.loc[year_season["Season"] == "Sep-Apr" , : ]
-#
-#plt.figure(figsize=(15, 6), dpi=80)
-#
-##Define y variables for plot
-#y_jul_feb = jul_feb["pct_sos"].dropna()
-#y_jul_feb
-#
-#
-##Define year variable for x tick labels
-#years = year_season["Year"].unique()
-#years_list = year_season["Year"].unique().tolist()
-#length = len(years_list)
-#length 
-#
-## Generate the Plot
-#plt.plot(years_list,y_jul_feb, "bo", linestyle="dashed", markersize=10, linewidth=1.5)
-#plt.plot(years_list,aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
-##plt.plot(sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
-#
-#plt.title("Average Total Return (Jul-Feb, Aug-Mar, & Sep-Apr)")
-#plt.ylabel("Total Return")
-#plt.xlabel("Year & Season")
-#plt.grid(True)
-#
-##Set x axis tick labels
-#
-#tick_locs = plt.xticks()
-#tick_locs
-#
-#plt.xticks(tick_locs,years_list)
-#
-## plt.legend
-#blue_patch = mpatches.Patch(color='Blue', label='May-Dec')
-#green_patch = mpatches.Patch(color='Green', label='Aug-Mar')
-#red_patch = mpatches.Patch(color='Red', label='Sep-Apr')
-#plt.legend(handles=[blue_patch, green_patch, red_patch])
-#
-## Save the Figure
-#plt.savefig("may_dec_apr_nov.png")
-#
-## Show the Figure
+#Define year variable for x tick labels
+years_list = year_season["Year"].unique().tolist() 
+
+# Generate the Plot
+plt.plot(years_list,jul_feb["pct_sos"], "bo", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,aug_mar["pct_sos"], "go", linestyle="dashed", markersize=10, linewidth=1.5)
+plt.plot(years_list,sep_apr["pct_sos"], "ro", linestyle="dashed", markersize=10, linewidth=1.5)
+
+plt.title("Average Total Return (Feb-Jul, Mar-Aug, & Apr-Sep)")
+plt.ylabel("Total Return")
+plt.xlabel("Year & Season")
+plt.grid(True)
+
+#Set x axis tick labels
+
+
+plt.legend()
+
+blue_patch = mpatches.Patch(color='Blue', label='Feb-Jul')
+green_patch = mpatches.Patch(color='Green', label='Mar-Aug')
+red_patch = mpatches.Patch(color='Red', label='Apr-Sep')
+plt.legend(handles=[blue_patch, green_patch, red_patch])
+
+# Save the Figure
+plt.savefig("may_dec_apr_nov.png")
+
+# Show the Figure
 #plt.show()
 
 #---------------------------------------------
@@ -435,467 +319,5 @@ plt.savefig("may_dec_apr_nov.png")
 
 # Show the Figure
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#----------------------------------------------------------------
-#JOSE START HERE FOR NOV 29 LAST MINUTE CHANGES
-#DON DO NOT GO BEYOND THIS LINE....SERIOUSLY MAN
-#----------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
